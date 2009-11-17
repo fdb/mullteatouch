@@ -78,17 +78,13 @@
         </exec>
     </target>
 
-    <!-- Install target, for building the actual product -->
-    <target name="install" depends="dist-mac" description="Create application">
-    </target>
-
     <target name="run" depends="compile">
-        <java classname="nodebox.client.Application" fork="true">
+        <java classname="mullteatouch.Main" fork="true">
             <classpath refid="project.classpath"/>
         </java>
     </target>
 
-    <target name="run-mac" depends="install" description="Run the double-clickable application">
+    <target name="run-mac" depends="dist-mac" description="Run the double-clickable application">
         <!-- Use the exec task to open the application -->
         <exec dir="${dist}" executable="/usr/bin/open" os="Mac OS X">
             <arg line="${ant.project.name}.app"/>

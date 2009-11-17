@@ -1,0 +1,19 @@
+Mullteatouch -- multitouch for Java
+===================================
+Mullteatouch provides access to Mac OS X multitouch capabilities using Java. It hooks into the private multitouch framework using JNA (https://jna.dev.java.net/).
+
+License
+-------
+Mullteatouch is licensed under the BSD license. See LICENSE for details.
+
+Thanks
+------
+The following blog posts provided the secret bits for tapping into the wonders of multitouch:
+
+http://www.steike.com/code/multitouch/
+
+http://lericson.blogg.se/code/2009/november/macbook-multitouch-in-python.html
+
+Contact
+-------
+Frederik De Bleser -- frederik at pandora dot be
