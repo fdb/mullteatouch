@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Mullteatouch" default="dist-mac" basedir=".">
+    <description>Builds and tests Mullteatouch.</description>
+
+    <target name="properties">
+        <property file="version.properties"/>
+        <fail unless="app.version" message="File version.properties should specify app.version."/>
+        <property name="src" value="src"/>
+        <property name="res" value="res"/>
+        <property name="lib" value="lib"/>
+        <property name="build" value="build"/>
+        <property name="build.prod" location="${build}/prod"/>
+        <property name="dist" value="dist"/>
+        <property name="apple.appstub"
+                  location="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"/>
+        <property name="mac.application" location="${dist}/${ant.project.name}.app/"/>
+        <property name="mac.application.contents" location="${mac.application}/Contents"/>
+        <property name="mac.application.macos" location="${mac.application.contents}/MacOS"/>
+        <property name="mac.application.macos.stub" location="${mac.application.macos}/${ant.project.name}"/>
+        <property name="mac.application.resources" location="${mac.application.contents}/Resources"/>
+        <property name="mac.application.resources.java" location="${mac.application.resources}/Java"/>
+        <property name="mac.application.lib" location="${mac.application.resources.java}/lib"/>
+
+        <path id="project.classpath">
+            <pathelement location="${build.prod}"/>
+            <fileset dir="${lib}">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+    </target>
+
+    <target name="init" depends="properties">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build.prod}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="${build.prod}" source="1.6" target="1.6">
+            <src path="${src}"/>
+            <classpath refid="project.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist}/lib"/>
+        <jar jarfile="${dist}/lib/app.jar" basedir="${build.prod}"/>
+    </target>
+
+    <target name="dist-mac" depends="jar" description="Make a double-clickable Mac OS X application">
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${mac.application.resources.java}"/>
+        <mkdir dir="${mac.application.macos}"/>
+        <mkdir dir="${mac.application.lib}"/>
+        <!-- Copy program jar and library jars -->
+        <copy file="${dist}/lib/app.jar"
+              todir="${mac.application.lib}"/>
+        <copy todir="${mac.application.lib}">
+            <fileset dir="${lib}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <!-- Copy resources-->
+        <copy todir="${mac.application.contents}">
+            <fileset dir="${res}"/>
+        </copy>
+        <!-- Copy application stub -->
+        <copy file="${apple.appstub}" toFile="${mac.application.macos}/${ant.project.name}"/>
+        <!-- fix stub permissions -->
+        <chmod file="${mac.application.macos}/${ant.project.name}" perm="755"/>
+        <!-- Replace version number -->
+        <replace file="${mac.application.contents}/Info.plist" token="@@VERSION@@" value="${app.version}"/>
+        <!-- Copy version number -->
+        <copy file="version.properties" todir="${mac.application.resources.java}" />
+        <!-- Make directory into a bundle -->
+        <exec executable="/Developer/Tools/SetFile">
+            <arg line="-a B ${mac.application}"/>
+        </exec>
+    </target>
+
+    <!-- Install target, for building the actual product -->
+    <target name="install" depends="dist-mac" description="Create application">
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="nodebox.client.Application" fork="true">
+            <classpath refid="project.classpath"/>
+        </java>
+    </target>
+
+    <target name="run-mac" depends="install" description="Run the double-clickable application">
+        <!-- Use the exec task to open the application -->
+        <exec dir="${dist}" executable="/usr/bin/open" os="Mac OS X">
+            <arg line="${ant.project.name}.app"/>
+        </exec>
+    </target>
+
+    <target name="clean" depends="properties">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>

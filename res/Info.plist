@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundleExecutable</key>
+    <string>Mullteatouch</string>
+    <key>CFBundleIconFile</key>
+    <string>mullteatouch.icns</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>Mullteatouch</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleGetInfoString</key>
+    <string>@@VERSION@@, Copyright Frederik De Bleser, (c) 2009</string>
+    <key>CFBundleShortVersionString</key>
+    <string>@@VERSION@@</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>Java</key>
+   <dict>
+      <key>ClassPath</key>
+      <string>$APP_PACKAGE/Contents/Resources/Java/lib/app.jar:$APP_PACKAGE/Contents/Resources/Java/lib/jna.jar</string>
+      <key>MainClass</key>
+      <string>mullteatouch.Main</string>
+      <key>Properties</key>
+      <dict>
+        <key>com.apple.mrj.application.live-resize</key>
+        <string>true</string>
+        <key>apple.laf.useScreenMenuBar</key>
+        <string>true</string>
+        <key>com.apple.mrj.application.apple.menu.about.name</key>
+        <string>Mullteatouch</string>
+        <key>apple.awt.graphics.UseQuartz</key>
+        <string>false</string>
+      </dict>
+   </dict>
+  </dict>
+</plist>
